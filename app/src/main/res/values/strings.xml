@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">GeoLocationDemo</string>
+    <string name="my_app_id">geolocation-wymfo</string>
+    <string name="show_location_history">Show Location History</string>
+    <string name="filter">Filter:</string>
+    <string name="filter_by_date">Filter by Date</string>
+    <string name="filter_by_location">Filter by Location</string>
+    <string name="share_it">Share it</string>
+</resources>
