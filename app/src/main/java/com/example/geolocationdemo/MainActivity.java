@@ -103,9 +103,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        Stitch.initializeDefaultAppClient(
-                getResources().getString(R.string.my_app_id)
-        );
         initStitchAppLogin();
         Button btn_share = findViewById(R.id.shareit);
         btn_share.setOnClickListener(new View.OnClickListener() {
