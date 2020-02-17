@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Document document;
     private GoogleMap map;
     private LatLng latlng;
+    private String userId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -148,8 +149,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         stitchAppClient.getAuth().loginWithCredential(new AnonymousCredential()).addOnCompleteListener(new OnCompleteListener<StitchUser>() {
             @Override
             public void onComplete(@NonNull final Task<StitchUser> task) {
-                if (task.isSuccessful()) {
-                    document.append("user_id", task.getResult().getId());
+                if (task.isSuccessful() && task.getResult() !=null) {
+                    document.append("user_id", task.getResult().getId() != null ? task.getResult().getId():"");
+                    userId = task.getResult().getId();
                     initMongoDB();
                     isError = false;
                 } else {
@@ -345,7 +347,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .getCollection("locationHistory");
         SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss", Locale.US);
         String date = s.format(new Date());
-        document.append("_id", date);
+        document.append("_id", userId+"_"+date);
         collection.insertOne(document)
                 .addOnSuccessListener(new OnSuccessListener<RemoteInsertOneResult>() {
                     @Override
@@ -376,6 +378,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.location_history:
                 Intent intent = new Intent(this, ViewLocationHistory.class);
+                intent.putExtra(StringConstants.USER_ID, userId);
                 startActivity(intent);
 
                 break;

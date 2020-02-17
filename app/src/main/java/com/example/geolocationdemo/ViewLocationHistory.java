@@ -28,6 +28,7 @@ public class ViewLocationHistory extends AppCompatActivity implements AsyncTaskF
     private Spinner dateSpinner;
     int numofLocations = 0;
     String date = "";
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,9 @@ public class ViewLocationHistory extends AppCompatActivity implements AsyncTaskF
         locationHistoryAdapter = new LocationHistoryAdapter(this, locationData);
         recyclerView.setAdapter(locationHistoryAdapter);
         progressBar.setVisibility(View.VISIBLE);
+        if(getIntent() != null){
+            userId = getIntent().getStringExtra(StringConstants.USER_ID);
+        }
         initSpinner();
         callGetLocationHistoryApi();
     }
@@ -128,7 +132,7 @@ public class ViewLocationHistory extends AppCompatActivity implements AsyncTaskF
     }
 
     private void initData() {
-        AsyncTaskFilter asyncTaskLocationFilter = new AsyncTaskFilter(this, locationData, numofLocations, date);
+        AsyncTaskFilter asyncTaskLocationFilter = new AsyncTaskFilter(this, locationData, numofLocations, date, userId);
         asyncTaskLocationFilter.execute();
     }
 }

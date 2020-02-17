@@ -11,14 +11,16 @@ public class AsyncTaskFilter extends AsyncTask<Object, Object, Object> {
     private int numLocations;
     private List<LocationData> result;
     private List<LocationData> result1;
+    private String userId;
     private String dateRange;
 
 
-    public AsyncTaskFilter(LocationFilterUpdateListener listener, List<LocationData> locationData, int numberofLocations, String date) {
+    public AsyncTaskFilter(LocationFilterUpdateListener listener, List<LocationData> locationData, int numberofLocations, String date, String userId) {
         this.locationFilterUpdateListener = listener;
         this.locationData = locationData;
         numLocations = numberofLocations;
         dateRange = date;
+        this.userId = userId;
     }
 
     /*----------Populate data according to the date & location filter applied ------------- */
@@ -32,11 +34,16 @@ public class AsyncTaskFilter extends AsyncTask<Object, Object, Object> {
         String dateFormat = "EEEE, MMM dd, yyyy, hh:mm aa";
         if ((n >= 10 && numLocations == 10) || (n >= 30 && numLocations == 30)) {
             for (int i = n; i > (n - numLocations); i--) {
-                result.add(locationData.get(i));
+                /*----------Only current users data is populated------------ */
+                if(userId.equalsIgnoreCase(locationData.get(i).getUserId())) {
+                    result.add(locationData.get(i));
+                }
             }
         } else {
             for (int i = n; i >= 0; i--) {
-                result.add(locationData.get(i));
+                if(userId.equalsIgnoreCase(locationData.get(i).getUserId())) {
+                    result.add(locationData.get(i));
+                }
             }
         }
         int n1 = result.size();
